@@ -118,4 +118,3 @@ function draw(): void {
 function mousePressed(): void {
   player.action();
 }
-
