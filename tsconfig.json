@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
+        "outFile": "sketch.js",
         "target": "es2016",
-        "module": "commonjs",
+        "module": "None",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "allowUnreachableCode": false,
@@ -14,7 +15,10 @@
         "noPropertyAccessFromIndexSignature": true
     },
     "files": [
-        "src/sketch.ts",
-        "src/p5.d.ts"
+        "src/p5.d.ts",
+        "src/std.ts",
+        "src/magic.ts",
+        "src/monster.ts",
+        "src/main.ts"
     ]
 }
