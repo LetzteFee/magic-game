@@ -1,5 +1,7 @@
 class Vektor {
-  constructor(x, y) {
+  x: number;
+  y: number;
+  constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
@@ -9,17 +11,19 @@ class Vektor {
   normieren() {
     this.div(this.betrag())
   }
-  div(d) {
+  div(d: number) {
     this.x /= d;
     this.y /= d;
   }
-  mult(m) {
+  mult(m: number) {
     this.x *= m;
     this.y *= m;
   }
 }
 class Value {
-  constructor(start, max_value) {
+  current_value: number;
+  max_value: number;
+  constructor(start: number, max_value: number) {
     this.current_value = start;
     this.max_value = max_value;
   }
@@ -31,6 +35,7 @@ class Value {
   }
 }
 class MagicSystem {
+  objects: MagicObject[];
   constructor() {
     this.objects = [];
   }
@@ -43,12 +48,17 @@ class MagicSystem {
       }
     }
   }
-  add(m) {
+  add(m: MagicObject) {
     this.objects.push(m);
   }
 }
 class MagicObject {
-  constructor(cx, cy, tx, ty) {
+  shouldDelete: boolean;
+  target_y: number;
+  target_x: number;
+  current_x: number;
+  current_y: number;
+  constructor(cx: number, cy: number, tx: number, ty: number) {
     this.current_x = cx;
     this.current_y = cy;
     this.target_x = tx;
@@ -59,7 +69,9 @@ class MagicObject {
   run() {}
 }
 class BloodMagic extends MagicObject {
-  constructor(cx, cy, tx, ty, v) {
+  v: Vektor;
+  timer: number;
+  constructor(cx: number, cy: number, tx: number, ty: number, v: number) {
     super(cx, cy, tx, ty);
     
     this.v = new Vektor(tx - cx, ty - cy);
@@ -68,7 +80,7 @@ class BloodMagic extends MagicObject {
     
     this.timer = 200;
   }
-  run() {
+  override run(): void {
     this.move();
     this.render();
     this.checkCollision();
@@ -76,39 +88,45 @@ class BloodMagic extends MagicObject {
     this.timer--;
     if(this.timer < 0) this.shouldDelete = true;
   }
-  render() {
+  render(): void {
     noStroke();
     fill("red");
     ellipse(this.current_x, this.current_y, 20);
   }
-  move() {
+  move(): void {
     this.current_x += this.v.x;
     this.current_y += this.v.y;
   }
-  checkCollision() {
+  checkCollision(): void {
     
   }
 }
 class BlitzMagic extends MagicObject {
-  constructor(cx, cy, tx, ty) {
+  timer: number;
+  constructor(cx: number, cy: number, tx: number, ty: number) {
     super(cx, cy, tx, ty);
     this.timer = 20;
   }
-  run() {
+  override run(): void {
     this.render();
     this.timer--;
     if (this.timer < 0) {
       this.shouldDelete = true;
     }
   }
-  render() {
+  render(): void {
     strokeWeight(5);
     stroke("blue");
     line(this.current_x, this.current_y, this.target_x, this.target_y);
   }
 }
 class Player {
-  constructor(x, y) {
+  ticks: number;
+  health: Value;
+  mana: Value;
+  x: any;
+  y: any;
+  constructor(x: number, y: number) {
     this.ticks = 0;
     this.health = new Value(100, 100);
     this.mana = new Value(100, 100);
@@ -179,6 +197,8 @@ class Player {
   }
 }
 class MonsterSystem {
+  ticks: number;
+  monsters: Monster[];
   constructor() {
     this.ticks = 0;
     this.monsters = [];
@@ -199,7 +219,10 @@ class MonsterSystem {
   }
 }
 class Monster {
-  constructor(x, y) {
+  ticks: number;
+  x: number;
+  y: number;
+  constructor(x: number, y: number) {
     this.ticks = 0;
     this.x = x;
     this.y = y;
@@ -224,7 +247,7 @@ class Monster {
 }
 let magic_system = new MagicSystem();
 let monster_system = new MonsterSystem();
-let player;
+let player: Player;
 function setup() {
   createCanvas(800, 600);
   player = new Player(width / 2, height / 2);
@@ -239,3 +262,4 @@ function draw() {
 function mousePressed() {
   player.action();
 }
+
